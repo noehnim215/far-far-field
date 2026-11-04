@@ -13,7 +13,7 @@ function activate() {
     artwork.style.setProperty("--left-shift", (leftMargin - rect.left) + "px");
     artwork.classList.add("is-left");
   }, 1050);
-  window.setTimeout(() => composition.classList.add("show-wordmark"), 2000);
+  window.setTimeout(() => artwork.classList.add("is-swapped"), 1980);\n  window.setTimeout(() => composition.classList.add("show-wordmark"), 2000);
 }
 field.addEventListener("click",activate);
 field.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();activate();}});
