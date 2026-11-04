@@ -1,11 +1,22 @@
 :root { --background: #e1e1e1; }
 * { box-sizing: border-box; }
-html, body { margin: 0; width: 100%; min-height: 100%; }
+html, body { margin: 0; min-height: 100%; width: 100%; }
 body { background: var(--background); color: #111; font-family: Arial, sans-serif; }
-.composition { width: 100%; height: 100svh; display: grid; place-items: center; overflow: hidden; }
-.artwork { position: relative; height: min(86svh, 86vw * 2047 / 1289); height: min(86svh, 136vw); aspect-ratio: 1289 / 2047; max-width: 86vw; }
-.art-layer { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; max-width: 100%; }
+.composition { width: 100%; min-height: 100svh; display: grid; place-items: center; overflow: hidden; }
+.artwork { position: relative; height: min(84svh, 132vw); aspect-ratio: 1289 / 2047; max-width: 84vw; }
+.art-layer { position: absolute; left: 50%; top: 50%; display: block; width: 100%; height: 100%; object-fit: contain; max-width: none; transform: translate(-50%, -50%) translate(calc(var(--x, 0) * 1%), calc(var(--y, 0) * 1%)) scale(var(--scale, 1)); transform-origin: center; cursor: grab; touch-action: none; user-select: none; -webkit-user-drag: none; }
+.art-layer:active { cursor: grabbing; }
 .black-hole-layer { z-index: 1; }
 .field-layer { z-index: 2; }
-#logoText { font-family: "ta-marugo-gf-03", sans-serif; cursor: pointer; font-weight: 400; }
-.center-title { position: absolute; z-index: 3; left: 50%; top: 50%; transform: translate(-50%, -50%); white-space: nowrap; font-size: clamp(24px, 5vw, 72px); line-height: 1; text-align: center; color: #111; }
+.editor-toggle { position: fixed; z-index: 11; right: 16px; top: 16px; padding: 10px 14px; border: 1px solid #111; background: #f5f5f5; font-size: 11px; cursor: pointer; }
+.editor { position: fixed; z-index: 10; top: 58px; right: 16px; width: min(300px, calc(100vw - 32px)); padding: 18px; background: #f5f5f5f2; border: 1px solid #111; box-shadow: 0 8px 30px #0002; font-size: 11px; }
+.editor[hidden] { display: none; }
+.editor-heading { font-weight: 700; letter-spacing: .08em; margin-bottom: 18px; }
+.editor label { display: flex; justify-content: space-between; margin: 15px 0 6px; }
+.editor select { width: 100%; padding: 9px; background: #fff; border: 1px solid #aaa; }
+.editor input[type=range] { width: 100%; accent-color: #111; }
+.editor-actions { display: flex; gap: 8px; margin-top: 20px; }
+.editor-actions button { flex: 1; padding: 11px; border: 0; background: #111; color: #fff; cursor: pointer; }
+.editor-actions #reset { background: #ddd; color: #111; }
+.editor p { color: #555; line-height: 1.5; margin-bottom: 0; }
+@media (max-width: 600px) { .artwork { height: min(78svh, 132vw); } }
