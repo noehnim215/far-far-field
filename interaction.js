@@ -4,9 +4,14 @@ let activated = false;
 field.addEventListener("click", () => {
   if (activated) return;
   activated = true;
-  // Make the underlying black hole visible before Field starts disappearing.
   artwork.classList.add("revealed");
+  window.setTimeout(() => artwork.classList.add("is-flying"), 140);
+  // Field finishes shrinking before the black hole slides to the left.
   window.setTimeout(() => {
-    artwork.classList.add("is-flying");
-  }, 140);
+    const rect = artwork.getBoundingClientRect();
+    const leftMargin = Math.max(18, window.innerWidth * 0.06);
+    const shift = leftMargin - rect.left;
+    artwork.style.setProperty("--left-shift", shift + "px");
+    artwork.classList.add("is-left");
+  }, 1100);
 });
