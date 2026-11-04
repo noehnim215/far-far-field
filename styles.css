@@ -81,6 +81,6 @@ body { background:var(--background); overflow:hidden; }
 .location-details p { margin:0 0 22px; font-size:14px; }
 .merch-gallery { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(15px,4vw,65px); align-items:start; }
 .merch-gallery figure { margin:0; min-width:0; }
-.merch-gallery img { display:block; width:100%; height:auto; object-fit:contain; background:#fff; }
+.merch-gallery img { display:block; width:100%; height:auto; object-fit:contain; background:transparent; }
 .merch-gallery figcaption { padding-top:12px; font-size:12px; text-align:center; color:#fff; }
 @media(max-width:700px) { .location-layout { grid-template-columns:1fr; } .location-map iframe { min-height:250px; height:45vh; } .merch-gallery { grid-template-columns:1fr; } }
