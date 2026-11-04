@@ -105,3 +105,7 @@ body { background:var(--background); overflow:hidden; }
 .w-grid img { display:block; width:min(144px,100%); height:min(100%,calc((100svh - 160px) / 3)); object-fit:contain; }
 .composition.w-grid-mode .w-zone,.composition.w-grid-mode .schedule-art { visibility:hidden; }
 @media(max-width:650px) { .w-grid { top:17%; bottom:17%; right:1%; gap:3px; } .w-grid img { width:100%; } .w-grid-toggle { right:2%; top:12px; } }
+
+/* Keep the 4×3 lineup clear of the black hole; tighten only horizontal spacing. */
+.composition.w-grid-mode .w-grid { left:max(calc(var(--w-zone-left, 24%) + 24px), 36%); right:8%; column-gap:4px; row-gap:clamp(5px,1vw,18px); }
+@media(max-width:650px) { .composition.w-grid-mode .w-grid { left:max(calc(var(--w-zone-left, 24%) + 12px), 40%); right:2%; column-gap:2px; } }
