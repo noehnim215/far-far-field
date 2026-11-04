@@ -42,3 +42,14 @@ body { background:var(--background); overflow:hidden; }
 .info-panel p { margin:0 0 12px; }
 .info-legal { position:relative; z-index:2; max-width:760px; margin:35vh 5vw 30px auto; font:400 10px/1.5 "ta-marugo-gf-03",sans-serif; opacity:.55; }
 @media(max-width:720px) { .info-orb { width:110px; } .info-nav { margin-left:145px; padding-top:16px; gap:10px 16px; } .info-nav button { font-size:18pt; } .info-panel { margin:210px 6vw 0; } .info-legal { margin:25vh 6vw 20px; } }
+
+/* Black-hole zoom portal and full restart control */
+.portal-zoom { position:fixed; z-index:9; left:0; top:0; width:100%; height:100%; pointer-events:none; opacity:0; overflow:hidden; background:transparent; transition:opacity 220ms ease; }
+.portal-zoom.is-active { opacity:1; }
+.portal-zoom img { position:absolute; left:var(--portal-x,50%); top:var(--portal-y,50%); width:var(--portal-width,30vw); height:var(--portal-height,50vh); object-fit:fill; transform:translate(-50%,-50%) scale(1); transform-origin:center; transition:transform 1150ms cubic-bezier(.45,.02,.8,.6),filter 1150ms ease; }
+.portal-zoom.is-zooming img { transform:translate(-50%,-50%) scale(12); filter:brightness(.1); }
+.info-home { position:absolute; z-index:5; left:0; top:0; width:150px; height:150px; padding:0; border:0; background:transparent; cursor:pointer; display:flex; align-items:flex-start; justify-content:flex-start; }
+.info-home img { width:min(110px,75%); height:min(130px,85%); object-fit:contain; opacity:.95; filter:drop-shadow(0 0 15px rgba(150,190,170,.15)); }
+.info-home:hover img { filter:drop-shadow(0 0 24px rgba(160,210,190,.45)); }
+.composition.info-open .info-screen { transition:opacity 650ms ease,visibility 650ms; }
+@media (prefers-reduced-motion:reduce) { .portal-zoom img { transition-duration:.01ms; } }
