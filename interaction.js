@@ -34,6 +34,39 @@ let lineupOpened=false;
 let remainingFiles=[];
 let spawnTimers=[];
 const W_SIZE=120;
+const wGridToggle=document.getElementById("wGridToggle");
+const wGrid=document.getElementById("wGrid");
+let gridMode=false;
+function setGridMode(enabled){
+  if(!lineupOpened)return;
+  gridMode=enabled;
+  composition.classList.toggle("w-grid-mode",enabled);
+  wGridToggle.textContent=enabled?"float":"line up";
+  wGridToggle.setAttribute("aria-pressed",String(enabled));
+  if(enabled){
+    spawnTimers.forEach(window.clearTimeout);
+    spawnTimers=[];
+    wGrid.replaceChildren();
+    wFiles.forEach(file=>{
+      const image=document.createElement("img");
+      image.src="./"+file;
+      image.alt="lineup artist";
+      wGrid.appendChild(image);
+    });
+  } else {
+    wGrid.replaceChildren();
+    wZone.replaceChildren();
+    const hole=artwork.getBoundingClientRect();
+    const available=window.innerWidth-Math.min(window.innerWidth-100,Math.ceil(hole.right+14));
+    let delay=0;
+    const shuffled=[...wFiles].sort(()=>Math.random()-.5);
+    shuffled.forEach((file,index)=>{
+      delay+=random(350,1100);
+      spawnTimers.push(window.setTimeout(()=>spawnW(file,index,available),delay));
+    });
+  }
+}
+wGridToggle.addEventListener("click",()=>setGridMode(!gridMode));
 function spawnW(file,index,available) {
   if(!lineupOpened)return;
   const image=document.createElement("img");
@@ -55,6 +88,9 @@ function spawnW(file,index,available) {
 lineupButton.addEventListener("click",()=>{
   if(lineupOpened||!artwork.classList.contains("is-swapped"))return;
   lineupOpened=true;
+  gridMode=false;
+  wGridToggle.textContent="line up";
+  wGridToggle.setAttribute("aria-pressed","false");
   const hole=artwork.getBoundingClientRect();
   const boundary=Math.min(window.innerWidth-100,Math.ceil(hole.right+14));
   const available=window.innerWidth-boundary;
@@ -77,7 +113,9 @@ const wordmarkReset = document.getElementById("wordmarkReset");
 function closeLineup() {
   if (!lineupOpened) return;
   lineupOpened = false;
-  composition.classList.remove("lineup-open");
+  composition.classList.remove("lineup-open","w-grid-mode");
+  gridMode=false;
+  wGrid.replaceChildren();
   remainingFiles = [];
   spawnTimers.forEach(window.clearTimeout);
   spawnTimers=[];
