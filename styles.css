@@ -55,9 +55,9 @@ body { background:var(--background); overflow:hidden; }
 @media (prefers-reduced-motion:reduce) { .portal-zoom img { transition-duration:.01ms; } }
 
 /* Original gentle, staggered float-down entrance, with per-artist positions. */
-.w-floater { opacity:0; transition:none; animation:w-original-float var(--w-duration,17s) ease-in-out var(--w-delay,0s) forwards; }
+.w-floater { opacity:1; transition:none; animation:w-original-float var(--w-duration,17s) ease-in-out var(--w-delay,0s) forwards; }
 @keyframes w-original-float {
-  0% { opacity:0; transform:translate3d(var(--w-x),-120%,0) rotate(-7deg); }
+  0% { opacity:1; transform:translate3d(var(--w-x),-260px,0) rotate(-7deg); }
   9% { opacity:1; }
   45% { opacity:1; transform:translate3d(calc(var(--w-x) + 12px),var(--w-mid),0) rotate(5deg); }
   100% { opacity:1; transform:translate3d(calc(var(--w-x) - 8px),var(--w-end),0) rotate(var(--w-tilt,0deg)); }
