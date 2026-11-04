@@ -1,38 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#e1e1e1">
-  <title>FAR FAR FIELD — 2028</title>
-  <script>
-  (function(d) {
-    var config = { kitId: 'wno3het', scriptTimeout: 3000, async: true };
-    var h = d.documentElement, t = setTimeout(function() {
-      h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive";
-    }, config.scriptTimeout);
-    var tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a;
-    h.className += " wf-loading";
-    tk.src = "https://use.typekit.net/" + config.kitId + ".js";
-    tk.async = true;
-    tk.onload = tk.onreadystatechange = function() {
-      a = this.readyState;
-      if (f || a && a !== "complete" && a !== "loaded") return;
-      f = true; clearTimeout(t);
-      try { Typekit.load(config); } catch (e) {}
-    };
-    s.parentNode.insertBefore(tk, s);
-  })(document);
-  </script>
-  <link rel="stylesheet" href="./styles.css?v=20261104-3">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#e1e1e1">
+<title>FAR FAR FIELD — 2028</title>
+<link rel="stylesheet" href="./styles.css?v=20261104-5">
 </head>
 <body>
-  <main class="composition" aria-label="FAR FAR FIELD layered artwork">
-    <div class="artwork" id="artwork">
-      <img id="blackHole" class="art-layer black-hole-layer" src="./black-hole.png" alt="Black hole oval">
-      <img id="fieldImage" class="art-layer field-layer" src="./field.png" alt="Blue green field oval">
-    </div>
-  </main>
-  <script src="./interaction.js?v=20261104-3" defer></script>
+<main class="composition" aria-label="FAR FAR FIELD">
+  <div class="artwork" id="artwork">
+    <img id="blackHole" class="art-layer black-hole-layer" src="./black-hole.png" alt="Black hole">
+    <img id="fieldImage" class="art-layer field-layer" src="./field.png" alt="Field" role="button" tabindex="0">
+  </div>
+  <img class="right-wordmark" id="rightWordmark" src="./fff.gif" alt="far far field">
+</main>
+<script src="./interaction.js?v=20261104-5" defer></script>
 </body>
 </html>
