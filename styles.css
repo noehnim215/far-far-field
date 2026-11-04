@@ -7,3 +7,9 @@ body { background: var(--background); }
 .art-layer { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
 .black-hole-layer { z-index: 1; }
 .field-layer { z-index: 2; }
+
+/* Move both layered images together from center to upper left. */
+.artwork { transform-origin: center center; transition: transform 1100ms cubic-bezier(.22,1,.36,1); will-change: transform; }
+.artwork.is-flying { transform: translate(var(--fly-x), var(--fly-y)) scale(.38); }
+.field-layer { cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { .artwork { transition-duration: 0.01ms; } }
