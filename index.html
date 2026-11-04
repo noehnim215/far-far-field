@@ -33,24 +33,5 @@
       <img id="fieldImage" class="art-layer field-layer" src="./field.png" alt="Blue green field oval">
     </div>
   </main>
-  <button class="editor-toggle" id="editorToggle" type="button" aria-controls="editor" aria-expanded="true">HIDE CONTROLS</button>
-  <aside class="editor" id="editor" aria-label="Image layout controls">
-    <div class="editor-heading">IMAGE CONTROLS</div>
-    <label for="target">SELECT IMAGE</label>
-    <select id="target">
-      <option value="blackHole">BLACK HOLE (BOTTOM)</option>
-      <option value="fieldImage">FIELD (TOP)</option>
-    </select>
-    <label for="scale">SIZE <output id="scaleValue">100%</output></label>
-    <input id="scale" type="range" min="10" max="200" step="1">
-    <label for="x">HORIZONTAL <output id="xValue">0%</output></label>
-    <input id="x" type="range" min="-100" max="100" step="1">
-    <label for="y">VERTICAL <output id="yValue">0%</output></label>
-    <input id="y" type="range" min="-100" max="100" step="1">
-    <div class="editor-actions"><button id="save" type="button">SAVE</button><button id="reset" type="button">RESET</button></div>
-    <button id="copyLayout" type="button" class="copy-layout">COPY LAYOUT CODE</button>
-    <p id="editorStatus" role="status">Drag either image or use the sliders. SAVE stores this layout in your browser.</p>
-  </aside>
-  <script src="./editor.js" defer></script>
 </body>
 </html>
