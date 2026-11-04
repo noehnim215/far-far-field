@@ -14,7 +14,7 @@ body { background:var(--background); overflow:hidden; }
 .artwork.is-left { transform:translateX(var(--left-shift,0px)); }
 .right-content { position:absolute; z-index:5; display:flex; flex-direction:column; align-items:center; gap:18px; width:min(43vw,720px); right:4vw; top:50%; transform:translate(120vw,-50%); opacity:0; pointer-events:none; transition:transform 1050ms cubic-bezier(.22,1,.36,1),opacity 400ms ease,width 1050ms ease,right 1050ms ease,top 1050ms ease; }
 .composition.show-wordmark .right-content { transform:translate(0,-50%); opacity:1; pointer-events:auto; }
-.right-wordmark { display:block; width:100%; height:auto; }
+.right-wordmark { display:block; width:100%; height:auto; cursor:pointer; }
 .lineup-label { border:0; padding:4px 8px; background:transparent; color:#fff; font-family:"ta-marugo-gf-03",sans-serif; font-size:12pt; font-weight:400; line-height:1.25; letter-spacing:0; text-align:center; cursor:pointer; }
 .lineup-label:hover { text-decoration:underline; }
 .composition.lineup-open .right-content { width:min(22vw,350px); right:2.5vw; top:calc(100% - 18px); transform:translate(0,-100%); }
