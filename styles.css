@@ -21,6 +21,18 @@ body { background:var(--background); overflow:hidden; }
 .composition.lineup-open .lineup-label { opacity:0; pointer-events:none; }
 .w-zone { position:absolute; z-index:4; top:0; bottom:0; left:var(--w-zone-left,100%); right:0; overflow:hidden; pointer-events:none; }
 .w-floater { position:absolute; width:var(--w-size,110px); height:auto; top:0; left:var(--w-x,20%); opacity:0; will-change:transform,opacity; animation:float-down var(--w-duration,15s) ease-in-out var(--w-delay,0s) forwards; }
-@keyframes float-down { 0% { transform:translate3d(0,-120%,0) rotate(-7deg); opacity:0; } 9% { opacity:1; } 45% { transform:translate3d(13px,38vh,0) rotate(5deg); opacity:1; } 85% { opacity:1; } 100% { transform:translate3d(-9px,105vh,0) rotate(-3deg); opacity:0; } }
+@keyframes float-down {
+  0% { transform:translate3d(0,-120%,0) rotate(-7deg); opacity:0; }
+  10% { opacity:1; }
+  45% { transform:translate3d(9px,var(--w-mid,32vh),0) rotate(5deg); opacity:1; }
+  100% { transform:translate3d(-7px,var(--w-end,95vh),0) rotate(-3deg); opacity:1; }
+}
+.w-floater.w-pile { animation-name:float-pile; }
+@keyframes float-pile {
+  0% { transform:translate3d(0,-120%,0) rotate(-8deg); opacity:0; }
+  12% { opacity:1; }
+  70% { transform:translate3d(11px,calc(var(--w-end) - 13px),0) rotate(5deg); opacity:1; }
+  100% { transform:translate3d(0,var(--w-end),0) rotate(var(--w-tilt,0deg)); opacity:1; }
+}
 @media (max-width:650px) { .right-content { width:46vw; right:2vw; gap:12px; } .composition.lineup-open .right-content { width:30vw; } }
 @media (prefers-reduced-motion:reduce) { .artwork,.black-hole-layer,.black-hole-final-layer,.field-layer,.right-content { transition-duration:.01ms; } .w-floater { animation-duration:1ms; } }
