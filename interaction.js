@@ -131,3 +131,21 @@ lineupButton.addEventListener("click", () => {
   nextSpawn=lastFrame+150;
   requestAnimationFrame(runPhysics);
 });
+
+const wordmarkReset = document.getElementById("wordmarkReset");
+function closeLineup() {
+  if (!lineupOpened) return;
+  lineupOpened = false;
+  composition.classList.remove("lineup-open");
+  remainingFiles = [];
+  sprites.forEach(sprite => sprite.element.remove());
+  sprites.length = 0;
+  wZone.replaceChildren();
+}
+wordmarkReset.addEventListener("click", closeLineup);
+wordmarkReset.addEventListener("keydown", event => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    closeLineup();
+  }
+});
