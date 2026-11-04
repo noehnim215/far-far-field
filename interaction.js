@@ -154,11 +154,14 @@ wordmarkReset.addEventListener("keydown", event => {
 const portalTrigger = document.getElementById("portalTrigger");
 const infoScreen = document.getElementById("infoScreen");
 const infoPanel = document.getElementById("infoPanel");
-const infoBack = document.getElementById("infoBack");
+const infoHome = document.getElementById("infoHome");
+const portalZoom = document.getElementById("portalZoom");
+let portalOpening = false;
 const infoCopy = {
   march: "<h2>march</h2><p>Explore FAR FAR FIELD — a fictional music and visual culture gathering set in Mongolia in 2028.</p>",
   about: "<h2>about</h2><p>FAR FAR FIELD is an experimental festival concept exploring sound, distance, movement and imagined landscapes.</p>",
   location: "<h2>location</h2><p>Mongolia · 2028</p><p>Exact venue, access details and travel information have not been announced. This is a fictional design project, not a ticketed event.</p>",
+  contact: "<h2>contact</h2><p>For inquiries about FAR FAR FIELD, please contact the project organizer through the official channels when available. This is a fictional festival concept; no public contact address has been announced.</p>",
   legal: "<h2>legal</h2><p>© 2028 FAR FAR FIELD. All rights reserved.</p><p>This is a fictional, non-commercial design concept. Names, likenesses, artist images and other third-party materials remain the property of their respective rights holders. Their inclusion does not imply sponsorship, endorsement, participation or affiliation.</p><p>Any dates, schedules, venues and lineup information are illustrative and are not a representation of confirmed performances. No tickets or reservations are offered through this website.</p><p>The website is provided for portfolio and educational presentation purposes, without warranties as to completeness, accuracy or availability. Do not rely on it for travel, purchasing or event decisions.</p><p>No account registration or personal-data submission is required by this concept page. Third-party hosting services may process technical data under their own policies.</p>"
 };
 function positionPortalTrigger() {
@@ -172,15 +175,30 @@ function positionPortalTrigger() {
 window.addEventListener("resize",positionPortalTrigger);
 window.setTimeout(positionPortalTrigger,2150);
 portalTrigger.addEventListener("click",()=>{
-  if(!artwork.classList.contains("is-swapped")) return;
+  if(!artwork.classList.contains("is-swapped") || portalOpening) return;
+  portalOpening=true;
   if(lineupOpened) closeLineup();
-  composition.classList.add("info-open");
-  infoScreen.setAttribute("aria-hidden","false");
-  infoPanel.innerHTML="";
+  const rect=artwork.getBoundingClientRect();
+  portalZoom.style.setProperty("--portal-x",(rect.left+rect.width/2)+"px");
+  portalZoom.style.setProperty("--portal-y",(rect.top+rect.height/2)+"px");
+  portalZoom.style.setProperty("--portal-width",rect.width+"px");
+  portalZoom.style.setProperty("--portal-height",rect.height+"px");
+  portalZoom.classList.add("is-active");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>portalZoom.classList.add("is-zooming")));
+  window.setTimeout(()=>{
+    composition.classList.add("info-open");
+    infoScreen.setAttribute("aria-hidden","false");
+    infoPanel.innerHTML="";
+    document.querySelectorAll("[data-info]").forEach(item=>item.classList.remove("is-active"));
+  },720);
+  window.setTimeout(()=>{
+    portalZoom.classList.remove("is-active","is-zooming");
+    portalOpening=false;
+  },1400);
 });
-infoBack.addEventListener("click",()=>{
-  composition.classList.remove("info-open");
-  infoScreen.setAttribute("aria-hidden","true");
+infoHome.addEventListener("click",()=>{
+  // A full page reload also clears all animation timers and returns Field to its initial state.
+  window.location.reload();
 });
 document.querySelectorAll("[data-info]").forEach(button=>{
   button.addEventListener("click",()=>{
