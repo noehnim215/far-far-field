@@ -36,16 +36,32 @@ lineupButton.addEventListener("click", () => {
   wZone.style.setProperty("--w-zone-left", boundary + "px");
   composition.classList.add("lineup-open");
   const available = window.innerWidth - boundary;
-  wFiles.forEach((file, index) => {
+  // Reuse the twelve supplied W artworks across many independent floaters.
+  const total = 48;
+  for (let index = 0; index < total; index++) {
+    const file = wFiles[index % wFiles.length];
     const item = document.createElement("img");
     item.src = "./" + file;
     item.alt = "lineup artist";
     item.className = "w-floater";
-    const width = Math.max(42, Math.min(115, available * (0.16 + (index % 3) * 0.025)));
+    const width = Math.max(38, Math.min(105, available * (0.12 + (index % 4) * 0.02)));
+    const horizontalSpace = Math.max(0, available - width - 20);
+    const position = 10 + (((index * 0.61803398875) % 1) * horizontalSpace);
+    const pile = index % 3 !== 0;
+    if (pile) item.classList.add("w-pile");
+    const height = width * 1.6;
+    const column = Math.floor((position / Math.max(1, available)) * 6);
+    const pileLevel = Math.floor(index / 12);
+    const endY = pile
+      ? Math.max(80, window.innerHeight - height - 8 - pileLevel * (height * 0.30) - (column % 3) * 12)
+      : window.innerHeight + height + 30;
     item.style.setProperty("--w-size", width + "px");
-    item.style.setProperty("--w-x", (((index * 0.61803398875) % 1) * Math.max(0, available - width - 8)) + "px");
-    item.style.setProperty("--w-delay", (index * 1.2) + "s");
-    item.style.setProperty("--w-duration", (15 + (index % 4) * 2.3) + "s");
+    item.style.setProperty("--w-x", position + "px");
+    item.style.setProperty("--w-mid", Math.round(endY * 0.46) + "px");
+    item.style.setProperty("--w-end", Math.round(endY) + "px");
+    item.style.setProperty("--w-tilt", ((index % 7) - 3) * 3 + "deg");
+    item.style.setProperty("--w-delay", (index * 0.48) + "s");
+    item.style.setProperty("--w-duration", (13 + (index % 6) * 1.7) + "s");
     wZone.appendChild(item);
-  });
+  }
 });
