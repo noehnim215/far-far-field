@@ -59,7 +59,7 @@ for (const id of Object.keys(defaults)) {
   });
 }
 document.getElementById("save").addEventListener("click", () => {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); status.textContent = "Saved on this browser."; }
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); status.textContent = "Saved in this browser. Click COPY LAYOUT CODE and send it in ChatGPT to publish to GitHub."; }
   catch (e) { status.textContent = "Browser storage is unavailable."; }
 });
 document.getElementById("reset").addEventListener("click", () => {
@@ -75,3 +75,22 @@ document.getElementById("editorToggle").addEventListener("click", () => {
   button.setAttribute("aria-expanded", String(!panel.hidden));
 });
 render(); sync();
+
+document.getElementById("copyLayout").addEventListener("click", async () => {
+  const payload = JSON.stringify({blackHole: state.blackHole, fieldImage: state.fieldImage}, null, 2);
+  try {
+    await navigator.clipboard.writeText(payload);
+    status.textContent = "Layout code copied! Paste it into our ChatGPT conversation and I can commit it to GitHub.";
+  } catch (error) {
+    const field = document.createElement("textarea");
+    field.value = payload;
+    field.readOnly = true;
+    field.style.cssText = "width:100%;height:130px;margin-top:10px;";
+    const old = document.getElementById("layoutExport");
+    if (old) old.remove();
+    field.id = "layoutExport";
+    document.getElementById("editor").appendChild(field);
+    field.select();
+    status.textContent = "Copy the selected layout code and send it in ChatGPT.";
+  }
+});
