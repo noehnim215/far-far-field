@@ -39,22 +39,52 @@ const wGrid=document.getElementById("wGrid");
 let gridMode=false;
 function setGridMode(enabled){
   if(!lineupOpened)return;
+  if(enabled===gridMode)return;
   gridMode=enabled;
-  composition.classList.toggle("w-grid-mode",enabled);
   wGridToggle.textContent=enabled?"float":"line up";
   wGridToggle.setAttribute("aria-pressed",String(enabled));
   if(enabled){
     spawnTimers.forEach(window.clearTimeout);
     spawnTimers=[];
+    const current=new Map([...wZone.querySelectorAll(".w-floater")].map(img=>[img.getAttribute("src").split("/").pop(),img.getBoundingClientRect()]));
     wGrid.replaceChildren();
+    // Measure final positions while the floating artists are still visible.
+    wGrid.style.display="grid";
     wFiles.forEach(file=>{
       const image=document.createElement("img");
       image.src="./"+file;
       image.alt="lineup artist";
+      image.style.opacity="0";
       wGrid.appendChild(image);
     });
+    const items=[...wGrid.children];
+    const targetRects=items.map(img=>img.getBoundingClientRect());
+    items.forEach((img,i)=>{
+      const file=wFiles[i];
+      const target=targetRects[i];
+      const from=current.get(file);
+      const fromX=from?from.left+from.width/2:target.left+target.width/2;
+      const fromY=from?from.top+from.height/2:-160;
+      const fromScale=from?Math.min(from.width/Math.max(target.width,1),1):.83;
+      img.style.transition="none";
+      img.style.transform=`translate3d(${fromX-target.left-target.width/2}px,${fromY-target.top-target.height/2}px,0) scale(${fromScale})`;
+      img.style.opacity=from?"1":"0";
+    });
+    composition.classList.add("w-grid-mode");
+    // Keep the floating images on-screen until their matching grid images start moving.
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      items.forEach(img=>{
+        img.style.transition="transform 1250ms cubic-bezier(.22,1,.36,1), opacity 450ms ease";
+        img.style.transform="translate3d(0,0,0) scale(1)";
+        img.style.opacity="1";
+      });
+      wZone.style.visibility="hidden";
+    }));
   } else {
     wGrid.replaceChildren();
+    wGrid.style.display="";
+    composition.classList.remove("w-grid-mode");
+    wZone.style.visibility="";
     wZone.replaceChildren();
     const hole=artwork.getBoundingClientRect();
     const available=window.innerWidth-Math.min(window.innerWidth-100,Math.ceil(hole.right+14));
@@ -116,6 +146,8 @@ function closeLineup() {
   composition.classList.remove("lineup-open","w-grid-mode");
   gridMode=false;
   wGrid.replaceChildren();
+  wGrid.style.display="";
+  wZone.style.visibility="";
   remainingFiles = [];
   spawnTimers.forEach(window.clearTimeout);
   spawnTimers=[];
