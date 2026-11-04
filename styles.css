@@ -1,11 +1,24 @@
 :root { --background: #e1e1e1; }
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; }
-body { background: var(--background); color: #111; }
-.composition { min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: auto; }
-.artwork { position: relative; flex: none; width: 1289px; height: 2047px; }
-.artwork img { position: absolute; top: 0; left: 0; width: 1289px; height: 2047px; max-width: none; max-height: none; object-fit: fill; }
+body { background: var(--background); color: #111; font-family: Arial, sans-serif; }
+.composition { min-height: 100svh; display: grid; place-items: center; overflow: hidden; }
+.artwork { position: relative; width: min(88vw, 520px); height: min(83svh, 800px); }
+.art-layer { position: absolute; left: 50%; top: 50%; width: auto; height: 100%; max-width: none; object-fit: contain; transform: translate(-50%, -50%) translate(var(--x, 0px), var(--y, 0px)) scale(var(--scale, 1)); transform-origin: center; pointer-events: none; }
 .black-hole-layer { z-index: 1; }
 .field-layer { z-index: 2; }
 #logoText { font-family: "ta-marugo-gf-03", sans-serif; cursor: pointer; font-weight: 400; }
-.center-title { position: absolute; z-index: 3; left: 50%; top: 50%; transform: translate(-50%, -50%); width: max-content; font-size: 80px; line-height: 1; text-align: center; color: #111; }
+.center-title { position: absolute; z-index: 3; left: 50%; top: 50%; width: max-content; max-width: none; white-space: nowrap; font-size: clamp(22px, 5vw, 72px); line-height: 1; color: #111; transform: translate(-50%, -50%) translate(var(--x, 0px), var(--y, 0px)) scale(var(--scale, 1)); transform-origin: center; }
+.editor-toggle { position: fixed; top: 16px; right: 16px; z-index: 11; padding: 10px 14px; border: 1px solid #111; background: #f6f6f6; font: 11px Arial; cursor: pointer; }
+.editor { position: fixed; z-index: 10; right: 16px; top: 58px; width: min(300px, calc(100vw - 32px)); padding: 18px; background: #f6f6f6ed; border: 1px solid #111; box-shadow: 0 8px 30px #0002; font-size: 11px; }
+.editor[hidden] { display: none; }
+.editor-heading { display: flex; justify-content: space-between; margin-bottom: 18px; gap: 10px; }
+.editor-heading span { color: #777; }
+.editor label { display: flex; justify-content: space-between; margin: 15px 0 5px; }
+.editor input[type=range] { width: 100%; accent-color: #111; }
+.editor select { width: 100%; padding: 8px; background: white; border: 1px solid #999; }
+.editor-actions { display: flex; gap: 8px; margin-top: 20px; }
+.editor-actions button { flex: 1; padding: 10px; background: #111; color: white; border: 0; cursor: pointer; }
+.editor-actions #reset { background: #ddd; color: #111; }
+.editor p { line-height: 1.4; color: #555; margin-bottom: 0; }
+@media (max-width: 600px) { .artwork { width: 90vw; height: 65svh; } .editor { top: 55px; } }
