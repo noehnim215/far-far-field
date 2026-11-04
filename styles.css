@@ -71,3 +71,16 @@ body { background:var(--background); overflow:hidden; }
 .info-panel .legal-section { margin:0 0 28px; }
 .info-panel .legal-section h3 { font-size:14px; line-height:1.5; font-weight:400; text-transform:uppercase; margin:0 0 8px; }
 .info-panel .legal-section p { font-size:13px; line-height:1.8; margin:0; }
+
+/* Location and merchandise views */
+.info-panel:has(.location-layout),.info-panel:has(.merch-gallery) { max-width:none; width:calc(100% - 10vw); margin:clamp(125px,18vh,185px) 5vw 0; padding-bottom:8vh; }
+.location-layout { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(240px,.8fr); align-items:start; gap:clamp(25px,5vw,85px); }
+.location-map iframe { display:block; width:100%; height:min(57vh,570px); min-height:300px; border:0; background:#151515; }
+.location-map a { display:inline-block; margin-top:12px; color:#fff; font-size:12px; text-underline-offset:3px; }
+.location-details h2 { font-size:18pt; }
+.location-details p { margin:0 0 22px; font-size:14px; }
+.merch-gallery { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(15px,4vw,65px); align-items:start; }
+.merch-gallery figure { margin:0; min-width:0; }
+.merch-gallery img { display:block; width:100%; height:auto; object-fit:contain; background:#fff; }
+.merch-gallery figcaption { padding-top:12px; font-size:12px; text-align:center; color:#fff; }
+@media(max-width:700px) { .location-layout { grid-template-columns:1fr; } .location-map iframe { min-height:250px; height:45vh; } .merch-gallery { grid-template-columns:1fr; } }
