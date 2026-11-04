@@ -95,3 +95,13 @@ body { background:var(--background); overflow:hidden; }
 /* Soften the return-to-start orb on the After Black Hole screen. */
 .info-home img { filter:blur(8px); }
 .info-home:hover img { filter:blur(8px); }
+
+/* Lineup-only layout switch: floating artists / ordered 4 × 3 grid. */
+.w-grid-toggle { display:none; position:absolute; z-index:8; right:3vw; top:24px; padding:5px 8px; border:1px solid rgba(255,255,255,.5); border-radius:0; background:rgba(0,0,0,.45); color:#fff; font:400 11pt/1.2 "ta-marugo-gf-03",sans-serif; cursor:pointer; }
+.composition.lineup-open .w-grid-toggle { display:block; }
+.w-grid-toggle:hover { background:rgba(255,255,255,.15); }
+.w-grid { display:none; position:absolute; z-index:7; top:10%; bottom:10%; left:var(--w-zone-left,24%); right:3%; grid-template-columns:repeat(4,minmax(0,1fr)); grid-template-rows:repeat(3,minmax(0,1fr)); gap:clamp(5px,1vw,18px); align-items:center; justify-items:center; pointer-events:none; }
+.composition.w-grid-mode .w-grid { display:grid; }
+.w-grid img { display:block; width:min(144px,100%); height:min(100%,calc((100svh - 160px) / 3)); object-fit:contain; }
+.composition.w-grid-mode .w-zone,.composition.w-grid-mode .schedule-art { visibility:hidden; }
+@media(max-width:650px) { .w-grid { top:17%; bottom:17%; right:1%; gap:3px; } .w-grid img { width:100%; } .w-grid-toggle { right:2%; top:12px; } }
