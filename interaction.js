@@ -37,7 +37,7 @@ let nextSpawn = 0;
 let zoneWidth = 0;
 let zoneHeight = 0;
 let remainingFiles = [];
-const W_SIZE = 101.2; // 15% larger than the previous 88px
+const W_SIZE = 120; // uniform size, approximately 19% larger
 function spawnW() {
   if (!remainingFiles.length) return;
   const fileIndex = Math.floor(Math.random() * remainingFiles.length);
@@ -52,7 +52,7 @@ function spawnW() {
     element:image, size:W_SIZE,
     x:random(8,Math.max(9,zoneWidth-W_SIZE-10)),
     y:-W_SIZE*1.6-random(0,35),
-    vx:random(-0.11,0.11), vy:random(0.16,0.29),
+    vx:random(-0.19,0.19), vy:random(-0.035,0.07),
     phase:random(0,Math.PI*2), frequency:random(0.00038,0.0007),
     angle:random(-6,6), spin:random(-0.0015,0.0015),
     anchored:Math.random()<0.42
@@ -68,12 +68,12 @@ function runPhysics(now) {
   }
   for(const s of sprites) {
     // Gentle, near-weightless drift: almost no downward acceleration.
-    s.vx += Math.sin(now*s.frequency+s.phase)*0.00006*dt;
-    s.vy += 0.00014*dt + Math.cos(now*s.frequency*.72+s.phase)*0.000025*dt;
+    s.vx += Math.sin(now*s.frequency+s.phase)*0.000095*dt;
+    s.vy += 0.000008*dt + Math.cos(now*s.frequency*.72+s.phase)*0.00012*dt;
     s.vx *= Math.pow(0.999,dt);
     s.vy *= Math.pow(0.999,dt);
-    s.vx=Math.max(-0.16,Math.min(0.16,s.vx));
-    s.vy=Math.max(-0.075,Math.min(0.48,s.vy));
+    s.vx=Math.max(-0.23,Math.min(0.23,s.vx));
+    s.vy=Math.max(-0.13,Math.min(0.17,s.vy));
     s.x+=s.vx*dt;
     s.y+=s.vy*dt;
     s.angle+=s.spin*dt;
@@ -84,7 +84,7 @@ function runPhysics(now) {
       s.vy=s.anchored?random(-0.025,0.005):-random(0.025,0.085);
       s.vx*=0.9;
     }
-    if(s.y < -s.size*1.7-110) s.vy=Math.abs(s.vy);
+    if(s.y < -s.size*0.4) { s.y=-s.size*0.4; s.vy=Math.abs(s.vy)+0.012; }
   }
   // Soft oval-to-oval collisions, avoiding harsh gravity or violent bouncing.
   for(let i=0;i<sprites.length;i++)for(let k=i+1;k<sprites.length;k++){
@@ -149,4 +149,43 @@ wordmarkReset.addEventListener("keydown", event => {
     event.preventDefault();
     closeLineup();
   }
+});
+
+const portalTrigger = document.getElementById("portalTrigger");
+const infoScreen = document.getElementById("infoScreen");
+const infoPanel = document.getElementById("infoPanel");
+const infoBack = document.getElementById("infoBack");
+const infoCopy = {
+  march: "<h2>march</h2><p>Explore FAR FAR FIELD — a fictional music and visual culture gathering set in Mongolia in 2028.</p>",
+  about: "<h2>about</h2><p>FAR FAR FIELD is an experimental festival concept exploring sound, distance, movement and imagined landscapes.</p>",
+  location: "<h2>location</h2><p>Mongolia · 2028</p><p>Exact venue, access details and travel information have not been announced. This is a fictional design project, not a ticketed event.</p>",
+  legal: "<h2>legal</h2><p>© 2028 FAR FAR FIELD. All rights reserved.</p><p>This is a fictional, non-commercial design concept. Names, likenesses, artist images and other third-party materials remain the property of their respective rights holders. Their inclusion does not imply sponsorship, endorsement, participation or affiliation.</p><p>Any dates, schedules, venues and lineup information are illustrative and are not a representation of confirmed performances. No tickets or reservations are offered through this website.</p><p>The website is provided for portfolio and educational presentation purposes, without warranties as to completeness, accuracy or availability. Do not rely on it for travel, purchasing or event decisions.</p><p>No account registration or personal-data submission is required by this concept page. Third-party hosting services may process technical data under their own policies.</p>"
+};
+function positionPortalTrigger() {
+  if (!artwork.classList.contains("is-left")) return;
+  const rect=artwork.getBoundingClientRect();
+  portalTrigger.style.left=rect.left+"px";
+  portalTrigger.style.top=rect.top+"px";
+  portalTrigger.style.width=rect.width+"px";
+  portalTrigger.style.height=rect.height+"px";
+}
+window.addEventListener("resize",positionPortalTrigger);
+window.setTimeout(positionPortalTrigger,2150);
+portalTrigger.addEventListener("click",()=>{
+  if(!artwork.classList.contains("is-swapped")) return;
+  if(lineupOpened) closeLineup();
+  composition.classList.add("info-open");
+  infoScreen.setAttribute("aria-hidden","false");
+  infoPanel.innerHTML="";
+});
+infoBack.addEventListener("click",()=>{
+  composition.classList.remove("info-open");
+  infoScreen.setAttribute("aria-hidden","true");
+});
+document.querySelectorAll("[data-info]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    document.querySelectorAll("[data-info]").forEach(item=>item.classList.remove("is-active"));
+    button.classList.add("is-active");
+    infoPanel.innerHTML=infoCopy[button.dataset.info]||"";
+  });
 });
