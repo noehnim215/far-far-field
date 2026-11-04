@@ -1,17 +1,19 @@
 const artwork = document.getElementById("artwork");
 const field = document.getElementById("fieldImage");
+const composition = document.querySelector(".composition");
 let activated = false;
-field.addEventListener("click", () => {
+function activate() {
   if (activated) return;
   activated = true;
   artwork.classList.add("revealed");
   window.setTimeout(() => artwork.classList.add("is-flying"), 140);
-  // Field finishes shrinking before the black hole slides to the left.
   window.setTimeout(() => {
     const rect = artwork.getBoundingClientRect();
-    const leftMargin = Math.max(18, window.innerWidth * 0.06);
-    const shift = leftMargin - rect.left;
-    artwork.style.setProperty("--left-shift", shift + "px");
+    const leftMargin = Math.max(12, window.innerWidth * 0.055);
+    artwork.style.setProperty("--left-shift", (leftMargin - rect.left) + "px");
     artwork.classList.add("is-left");
-  }, 1100);
-});
+  }, 1050);
+  window.setTimeout(() => composition.classList.add("show-wordmark"), 2000);
+}
+field.addEventListener("click",activate);
+field.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();activate();}});
