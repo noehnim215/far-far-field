@@ -27,12 +27,31 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <main class="composition" aria-label="FAR FAR FIELD layered visual">
-    <div class="artwork">
-      <img class="black-hole-layer" src="./black-hole.png" alt="Black oval portal with a metallic rim">
-      <img class="field-layer" src="./field.png" alt="Blue-green gradient field oval">
+  <main class="composition" aria-label="FAR FAR FIELD live composition editor">
+    <div class="artwork" id="artwork">
+      <img id="blackHole" class="art-layer black-hole-layer" src="./black-hole.png" alt="Black hole oval">
+      <img id="fieldImage" class="art-layer field-layer" src="./field.png" alt="Blue green field oval">
       <div class="center-title" id="logoText">far far field</div>
     </div>
   </main>
+  <button class="editor-toggle" id="editorToggle" aria-controls="editor" aria-expanded="true">HIDE EDITOR</button>
+  <aside class="editor" id="editor" aria-label="Live layout controls">
+    <div class="editor-heading"><strong>LIVE EDITOR</strong><span>FAR FAR FIELD</span></div>
+    <label for="target">EDIT LAYER</label>
+    <select id="target">
+      <option value="blackHole">BLACK HOLE</option>
+      <option value="fieldImage">FIELD</option>
+      <option value="logoText">TEXT</option>
+    </select>
+    <label for="scale">SCALE <output id="scaleValue"></output></label>
+    <input id="scale" type="range" min="5" max="250" step="1">
+    <label for="x">X POSITION <output id="xValue"></output></label>
+    <input id="x" type="range" min="-700" max="700" step="1">
+    <label for="y">Y POSITION <output id="yValue"></output></label>
+    <input id="y" type="range" min="-700" max="700" step="1">
+    <div class="editor-actions"><button id="save" type="button">SAVE</button><button id="reset" type="button">RESET</button></div>
+    <p id="editorStatus" role="status">Changes preview instantly. Save keeps settings on this browser.</p>
+  </aside>
+  <script src="./editor.js" defer></script>
 </body>
 </html>
