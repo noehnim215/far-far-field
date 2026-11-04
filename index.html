@@ -8,7 +8,7 @@
 <script>
 (function(d){var c={kitId:"wno3het",scriptTimeout:3000,async:true};var t=d.createElement("script");t.src="https://use.typekit.net/"+c.kitId+".js";t.async=true;t.onload=function(){try{Typekit.load(c)}catch(e){}};d.head.appendChild(t)})(document);
 </script>
-<link rel="stylesheet" href="./styles.css?v=20261104-14">
+<link rel="stylesheet" href="./styles.css?v=20261104-15">
 </head>
 <body>
 <main class="composition" aria-label="FAR FAR FIELD">
@@ -18,14 +18,15 @@
     <img id="fieldImage" class="art-layer field-layer" src="./field.png" alt="Field" role="button" tabindex="0">
   </div>
   <button class="portal-trigger" id="portalTrigger" type="button" aria-label="Open festival information"></button>
+  <div class="portal-zoom" id="portalZoom" aria-hidden="true"><img src="./black-hole-w-small-field.png" alt=""></div>
   <section class="info-screen" id="infoScreen" aria-label="Festival information" aria-hidden="true">
-    <div class="info-orb" aria-hidden="true"><img src="./field.png" alt=""></div>
+    <button class="info-home" id="infoHome" type="button" aria-label="Return to beginning"><img src="./field.png" alt=""></button>
     <nav class="info-nav" aria-label="Festival sections">
       <button type="button" data-info="march">march</button>
       <button type="button" data-info="about">about</button>
       <button type="button" data-info="location">location</button>
       <button type="button" data-info="legal">legal</button>
-      <button type="button" id="infoBack">back</button>
+      <button type="button" data-info="contact">contact</button>
     </nav>
     <article class="info-panel" id="infoPanel" aria-live="polite"></article>
     <footer class="info-legal">© 2028 FAR FAR FIELD. Fictional festival concept. All rights reserved. Visuals and artist references are used for design demonstration only. No affiliation with any featured artist is implied. Event details, ticketing, travel, and location information are illustrative and subject to change. This site is provided as-is, without warranty. Personal information is not requested through this concept website. For official information, consult the event organizer.</footer>
@@ -37,6 +38,6 @@
     <button class="lineup-label" id="lineupButton" type="button">lineup &amp; schedule</button>
   </div>
 </main>
-<script src="./interaction.js?v=20261104-14" defer></script>
+<script src="./interaction.js?v=20261104-15" defer></script>
 </body>
 </html>
