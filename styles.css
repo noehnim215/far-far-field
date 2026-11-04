@@ -41,3 +41,6 @@ footer { display: flex; justify-content: space-between; padding: 35px 3.5%; bord
   .days { grid-template-columns: 1fr; }
   footer { flex-direction: column; }
 }
+/* Temporary typography test */
+.test-page { min-height: 75vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+#testTitle { font-family: "ta-marugo-gf-03", sans-serif; font-size: clamp(42px, 9vw, 150px); font-weight: 400; text-align: center; line-height: 1; margin: 0; }
