@@ -28,8 +28,8 @@ body { background:var(--background); overflow:hidden; }
 @media (prefers-reduced-motion:reduce) { .artwork,.black-hole-layer,.black-hole-final-layer,.field-layer,.right-content { transition-duration:.01ms; } .w-floater { animation-duration:1ms; } }
 
 /* Portal information view. The existing Field / Black Hole transitions remain unchanged. */
-.portal-trigger { position:absolute; z-index:6; display:none; border:0; background:transparent; cursor:pointer; left:0; top:0; width:0; height:0; border-radius:50%; }
-.composition.show-wordmark .portal-trigger { display:block; }
+.portal-trigger { position:absolute; z-index:6; display:none; border:0; background:transparent; cursor:pointer; inset:0; width:100%; height:100%; border-radius:50%; }
+.artwork.is-swapped .portal-trigger { display:block; }
 .info-screen { position:absolute; inset:0; z-index:10; background:#000; color:#fff; opacity:0; visibility:hidden; pointer-events:none; transition:opacity 800ms ease,visibility 800ms; font-family:"ta-marugo-gf-03",sans-serif; overflow:auto; }
 .composition.info-open .info-screen { opacity:1; visibility:visible; pointer-events:auto; }
 .info-orb { position:absolute; left:2%; top:2.5%; width:clamp(120px,14vw,190px); aspect-ratio:1289 / 2047; overflow:hidden; border-radius:50%; box-shadow:0 0 24px 6px rgba(140,180,180,.13); }
@@ -53,3 +53,14 @@ body { background:var(--background); overflow:hidden; }
 .info-home:hover img { filter:drop-shadow(0 0 24px rgba(160,210,190,.45)); }
 .composition.info-open .info-screen { transition:opacity 650ms ease,visibility 650ms; }
 @media (prefers-reduced-motion:reduce) { .portal-zoom img { transition-duration:.01ms; } }
+
+/* Original gentle, staggered float-down entrance, with per-artist positions. */
+.w-floater { opacity:0; transition:none; animation:w-original-float var(--w-duration,17s) ease-in-out var(--w-delay,0s) forwards; }
+@keyframes w-original-float {
+  0% { opacity:0; transform:translate3d(var(--w-x),-120%,0) rotate(-7deg); }
+  9% { opacity:1; }
+  45% { opacity:1; transform:translate3d(calc(var(--w-x) + 12px),var(--w-mid),0) rotate(5deg); }
+  100% { opacity:1; transform:translate3d(calc(var(--w-x) - 8px),var(--w-end),0) rotate(var(--w-tilt,0deg)); }
+}
+.w-floater.w-active { opacity:0; }
+@media (prefers-reduced-motion:reduce) { .w-floater { animation-duration:.01ms; } }
