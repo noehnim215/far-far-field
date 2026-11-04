@@ -90,8 +90,8 @@ body { background:var(--background); overflow:hidden; }
 @media(max-width:720px) { .info-wordmark { top:90px; right:12px; width:110px; } }
 
 /* Use the exact supplied after-black-hole artwork as the information screen background. */
-.info-screen { background:#000 url("./after-black-hole.png") center center / 100% 100% no-repeat; }
+.info-screen { background:#000; }
 
 /* Soften the return-to-start orb on the After Black Hole screen. */
-.info-home img { filter:blur(8px) drop-shadow(0 0 15px rgba(150,190,170,.15)); }
-.info-home:hover img { filter:blur(8px) drop-shadow(0 0 24px rgba(160,210,190,.45)); }
+.info-home img { filter:blur(8px); }
+.info-home:hover img { filter:blur(8px); }
