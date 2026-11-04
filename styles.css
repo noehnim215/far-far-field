@@ -64,3 +64,10 @@ body { background:var(--background); overflow:hidden; }
 }
 .w-floater.w-active { opacity:0; }
 @media (prefers-reduced-motion:reduce) { .w-floater { animation-duration:.01ms; } }
+
+/* Long-form legal content only appears when the legal tab is selected. */
+.info-panel:has(.legal-section) { max-width:760px; margin-top:clamp(125px,19vh,210px); padding-bottom:10vh; }
+.info-panel .legal-intro { font-size:12px; letter-spacing:.04em; opacity:.7; margin-bottom:32px; }
+.info-panel .legal-section { margin:0 0 28px; }
+.info-panel .legal-section h3 { font-size:14px; line-height:1.5; font-weight:400; text-transform:uppercase; margin:0 0 8px; }
+.info-panel .legal-section p { font-size:13px; line-height:1.8; margin:0; }
