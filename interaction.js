@@ -34,102 +34,100 @@ const sprites = [];
 let lineupOpened = false;
 let lastFrame = 0;
 let nextSpawn = 0;
-let spawnBurst = 0;
 let zoneWidth = 0;
 let zoneHeight = 0;
-const maxSprites = 27;
+let remainingFiles = [];
+const W_SIZE = 88;
 function spawnW() {
-  if (sprites.length >= maxSprites) return;
-  const size = random(58, Math.min(115, Math.max(66,zoneWidth * 0.22)));
+  if (!remainingFiles.length) return;
+  const file = remainingFiles.pop();
   const image = document.createElement("img");
-  image.src = "./" + wFiles[Math.floor(Math.random() * wFiles.length)];
+  image.src = "./" + file;
   image.alt = "lineup artist";
   image.className = "w-floater w-active";
-  image.style.setProperty("--w-size", size + "px");
+  image.style.setProperty("--w-size", W_SIZE + "px");
   wZone.appendChild(image);
   sprites.push({
-    element:image, size,
-    x:random(4,Math.max(5,zoneWidth-size-8)), y:-size-random(5,130),
-    vx:random(-0.38,0.38), vy:random(0.06,0.3),
-    phase:random(0,Math.PI*2), sway:random(0.0004,0.0012),
-    angle:random(-10,10), spin:random(-0.008,0.008),
-    bounce:random(0.30,0.65), born:performance.now(),
-    pile:Math.random()<0.65
+    element:image, size:W_SIZE,
+    x:random(8,Math.max(9,zoneWidth-W_SIZE-10)),
+    y:-W_SIZE*1.6-random(10,90),
+    vx:random(-0.075,0.075), vy:random(0.035,0.085),
+    phase:random(0,Math.PI*2), frequency:random(0.00038,0.0007),
+    angle:random(-6,6), spin:random(-0.0015,0.0015),
+    anchored:Math.random()<0.42
   });
 }
 function runPhysics(now) {
   if (!lineupOpened) return;
-  const dt = Math.min(34,Math.max(8,now-lastFrame||16));
+  const dt=Math.min(34,Math.max(1,now-lastFrame||16));
   lastFrame=now;
-  if (now>=nextSpawn) {
-    if (spawnBurst>0) {
-      for(let i=0;i<Math.floor(random(2,5));i++) spawnW();
-      spawnBurst--;
-      nextSpawn=now+random(220,650);
-    } else {
-      spawnW();
-      nextSpawn=now+random(950,2700);
-      if(Math.random()<0.18) spawnBurst=Math.floor(random(2,5));
-    }
+  if(now>=nextSpawn && remainingFiles.length) {
+    spawnW();
+    nextSpawn=now+random(1300,3300);
   }
-  for (const s of sprites) {
-    s.vx += Math.sin(now*s.sway+s.phase)*0.00065*dt;
-    s.vx *= Math.pow(0.996,dt);
-    s.vy += (s.pile?0.00085:0.00055)*dt;
-    s.vy += Math.sin(now*0.0011+s.phase)*0.00032*dt;
-    s.vy=Math.min(s.vy, s.pile?0.95:0.72);
+  for(const s of sprites) {
+    // Gentle, near-weightless drift: almost no downward acceleration.
+    s.vx += Math.sin(now*s.frequency+s.phase)*0.000045*dt;
+    s.vy += Math.cos(now*s.frequency*.72+s.phase)*0.000025*dt;
+    s.vx *= Math.pow(0.999,dt);
+    s.vy *= Math.pow(0.999,dt);
+    s.vx=Math.max(-0.16,Math.min(0.16,s.vx));
+    s.vy=Math.max(-0.065,Math.min(0.14,s.vy));
     s.x+=s.vx*dt;
     s.y+=s.vy*dt;
     s.angle+=s.spin*dt;
-    if(s.x<2){s.x=2;s.vx=Math.abs(s.vx)*0.7;}
-    if(s.x+s.size>zoneWidth-2){s.x=zoneWidth-s.size-2;s.vx=-Math.abs(s.vx)*0.7;}
-    if(s.y+s.size*1.58>zoneHeight-3) {
-      if(s.pile){s.y=zoneHeight-s.size*1.58-3;s.vy=-Math.abs(s.vy)*s.bounce;s.vx*=0.97;if(Math.abs(s.vy)<0.07)s.vy=0;}
+    if(s.x<5){s.x=5;s.vx=Math.abs(s.vx)*0.6;}
+    if(s.x+s.size>zoneWidth-5){s.x=zoneWidth-s.size-5;s.vx=-Math.abs(s.vx)*0.6;}
+    if(s.y+s.size*1.58>zoneHeight-8){
+      s.y=zoneHeight-s.size*1.58-8;
+      s.vy=s.anchored?random(-0.025,0.005):-random(0.025,0.085);
+      s.vx*=0.9;
     }
+    if(s.y < -s.size*1.7-110) s.vy=Math.abs(s.vy);
   }
-  // Approximate oval collision bodies: exchange impulses and separate overlaps.
+  // Soft oval-to-oval collisions, avoiding harsh gravity or violent bouncing.
   for(let i=0;i<sprites.length;i++)for(let k=i+1;k<sprites.length;k++){
     const a=sprites[i],b=sprites[k];
-    const ax=a.x+a.size*.5, ay=a.y+a.size*.79;
-    const bx=b.x+b.size*.5, by=b.y+b.size*.79;
-    const dx=bx-ax,dy=(by-ay)*0.75;
-    const minDist=(a.size+b.size)*0.34;
-    const dist=Math.hypot(dx,dy)||0.001;
+    const dx=(b.x+b.size*.5)-(a.x+a.size*.5);
+    const dy=((b.y+b.size*.79)-(a.y+a.size*.79))*.65;
+    const minDist=W_SIZE*.70;
+    const dist=Math.hypot(dx,dy)||.001;
     if(dist>=minDist)continue;
     const nx=dx/dist,ny=dy/dist;
-    const overlap=(minDist-dist)*0.5;
-    a.x-=nx*overlap;b.x+=nx*overlap;
-    a.y-=ny*overlap*.7;b.y+=ny*overlap*.7;
+    const push=Math.min(2,(minDist-dist)*.055);
+    a.x-=nx*push;b.x+=nx*push;
+    a.y-=ny*push;b.y+=ny*push;
     const relative=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;
     if(relative<0){
-      const impulse=-(1.28)*relative/2;
+      const impulse=-relative*.20;
       a.vx-=impulse*nx;b.vx+=impulse*nx;
       a.vy-=impulse*ny;b.vy+=impulse*ny;
-      a.spin-=impulse*.001;b.spin+=impulse*.001;
     }
   }
-  for(let i=sprites.length-1;i>=0;i--){
-    const s=sprites[i];
-    if(s.y>zoneHeight+120 || (sprites.length>=maxSprites && now-s.born>42000 && Math.random()<0.003)){
-      s.element.remove();sprites.splice(i,1);continue;
-    }
+  for(const s of sprites){
+    s.x=Math.max(0,Math.min(zoneWidth-s.size,s.x));
     s.element.style.transform="translate3d("+s.x.toFixed(1)+"px,"+s.y.toFixed(1)+"px,0) rotate("+s.angle.toFixed(1)+"deg)";
   }
   requestAnimationFrame(runPhysics);
 }
 lineupButton.addEventListener("click", () => {
-  if (lineupOpened || !artwork.classList.contains("is-swapped")) return;
+  if(lineupOpened || !artwork.classList.contains("is-swapped"))return;
   lineupOpened=true;
   const hole=artwork.getBoundingClientRect();
-  const boundary=Math.min(window.innerWidth-80,Math.ceil(hole.right+14));
+  const boundary=Math.min(window.innerWidth-100,Math.ceil(hole.right+14));
   zoneWidth=window.innerWidth-boundary;
   zoneHeight=window.innerHeight;
   wZone.style.setProperty("--w-zone-left",boundary+"px");
   scheduleArt.style.setProperty("--schedule-left",(boundary+zoneWidth*.08)+"px");
   scheduleArt.style.setProperty("--schedule-width",(zoneWidth*.84)+"px");
   composition.classList.add("lineup-open");
+  // Exactly one of each W image, arriving in a shuffled order.
+  remainingFiles=[...wFiles];
+  for(let i=remainingFiles.length-1;i>0;i--){
+    const k=Math.floor(Math.random()*(i+1));
+    [remainingFiles[i],remainingFiles[k]]=[remainingFiles[k],remainingFiles[i]];
+  }
   lastFrame=performance.now();
   nextSpawn=lastFrame+150;
-  spawnBurst=2;
   requestAnimationFrame(runPhysics);
 });
