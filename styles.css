@@ -7,10 +7,14 @@ body { background:var(--background); overflow:hidden; }
 .art-layer { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block; }
 .black-hole-layer { z-index:1; opacity:0; transition:opacity 120ms ease-out; }
 .artwork.revealed .black-hole-layer { opacity:1; }
-.black-hole-final-layer { z-index:2; opacity:0; transition:opacity 1000ms ease-in-out; pointer-events:none; }\n.artwork.is-swapped .black-hole-final-layer { opacity:1; }\n.field-layer { z-index:3; cursor:pointer; transform-origin:center; transition:transform 850ms cubic-bezier(.55,.04,.8,.4),opacity 750ms ease-in; }
-.artwork.is-flying .field-layer { transform:translate(24%,-25%) scale(0); opacity:0; pointer-events:none; }
+.black-hole-final-layer { z-index:2; opacity:0; transition:opacity 1000ms ease-in-out; pointer-events:none; }
+.artwork.is-swapped .black-hole-final-layer { opacity:1; }
+.field-layer { z-index:3; cursor:pointer; transform-origin:center; transition:transform 850ms cubic-bezier(.55,.04,.8,.4),opacity 750ms ease-in; }
+.artwork.is-flying .field-layer { transform:translate(-24%,-25%) scale(0); opacity:0; pointer-events:none; }
 .artwork.is-left { transform:translateX(var(--left-shift,0px)); }
-.right-wordmark { position:absolute; z-index:3; display:block; width:min(43vw,720px); height:auto; right:4vw; top:50%; transform:translate(120vw,-50%); opacity:0; pointer-events:none; transition:transform 1050ms cubic-bezier(.22,1,.36,1),opacity 400ms ease; }
-.composition.show-wordmark .right-wordmark { transform:translate(0,-50%); opacity:1; }
-@media (max-width:650px) { .right-wordmark { width:46vw; right:2vw; } }
-@media (prefers-reduced-motion:reduce) { .artwork,.black-hole-layer,.field-layer,.right-wordmark { transition-duration:.01ms; } }
+.right-content { position:absolute; z-index:4; display:flex; flex-direction:column; align-items:center; gap:18px; width:min(43vw,720px); right:4vw; top:50%; transform:translate(120vw,-50%); opacity:0; pointer-events:none; transition:transform 1050ms cubic-bezier(.22,1,.36,1),opacity 400ms ease; }
+.composition.show-wordmark .right-content { transform:translate(0,-50%); opacity:1; }
+.right-wordmark { display:block; width:100%; height:auto; }
+.lineup-label { color:#fff; font-family:Arial,Helvetica,sans-serif; font-size:12pt; font-weight:400; line-height:1.25; letter-spacing:0; text-align:center; }
+@media (max-width:650px) { .right-content { width:46vw; right:2vw; gap:12px; } }
+@media (prefers-reduced-motion:reduce) { .artwork,.black-hole-layer,.black-hole-final-layer,.field-layer,.right-content { transition-duration:.01ms; } }
