@@ -37,10 +37,11 @@ let nextSpawn = 0;
 let zoneWidth = 0;
 let zoneHeight = 0;
 let remainingFiles = [];
-const W_SIZE = 88;
+const W_SIZE = 101.2; // 15% larger than the previous 88px
 function spawnW() {
   if (!remainingFiles.length) return;
-  const file = remainingFiles.pop();
+  const fileIndex = Math.floor(Math.random() * remainingFiles.length);
+  const [file] = remainingFiles.splice(fileIndex, 1);
   const image = document.createElement("img");
   image.src = "./" + file;
   image.alt = "lineup artist";
@@ -50,8 +51,8 @@ function spawnW() {
   sprites.push({
     element:image, size:W_SIZE,
     x:random(8,Math.max(9,zoneWidth-W_SIZE-10)),
-    y:-W_SIZE*1.6-random(10,90),
-    vx:random(-0.075,0.075), vy:random(0.035,0.085),
+    y:-W_SIZE*1.6-random(0,35),
+    vx:random(-0.11,0.11), vy:random(0.16,0.29),
     phase:random(0,Math.PI*2), frequency:random(0.00038,0.0007),
     angle:random(-6,6), spin:random(-0.0015,0.0015),
     anchored:Math.random()<0.42
@@ -63,16 +64,16 @@ function runPhysics(now) {
   lastFrame=now;
   if(now>=nextSpawn && remainingFiles.length) {
     spawnW();
-    nextSpawn=now+random(1300,3300);
+    nextSpawn=now+random(650,1900);
   }
   for(const s of sprites) {
     // Gentle, near-weightless drift: almost no downward acceleration.
-    s.vx += Math.sin(now*s.frequency+s.phase)*0.000045*dt;
-    s.vy += Math.cos(now*s.frequency*.72+s.phase)*0.000025*dt;
+    s.vx += Math.sin(now*s.frequency+s.phase)*0.00006*dt;
+    s.vy += 0.00014*dt + Math.cos(now*s.frequency*.72+s.phase)*0.000025*dt;
     s.vx *= Math.pow(0.999,dt);
     s.vy *= Math.pow(0.999,dt);
     s.vx=Math.max(-0.16,Math.min(0.16,s.vx));
-    s.vy=Math.max(-0.065,Math.min(0.14,s.vy));
+    s.vy=Math.max(-0.075,Math.min(0.48,s.vy));
     s.x+=s.vx*dt;
     s.y+=s.vy*dt;
     s.angle+=s.spin*dt;
@@ -121,7 +122,7 @@ lineupButton.addEventListener("click", () => {
   scheduleArt.style.setProperty("--schedule-left",(boundary+zoneWidth*.08)+"px");
   scheduleArt.style.setProperty("--schedule-width",(zoneWidth*.84)+"px");
   composition.classList.add("lineup-open");
-  // Exactly one of each W image, arriving in a shuffled order.
+  // Exactly one of each W image, selected independently at random each time.
   remainingFiles=[...wFiles];
   for(let i=remainingFiles.length-1;i>0;i--){
     const k=Math.floor(Math.random()*(i+1));
